@@ -5,7 +5,7 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE HTML>
-<html ng-app="movieapp">
+<html ng-app="movieapp" ng-cloak>
 <head>
 <title>Free Theater Website Template | Home :: w3layouts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -25,14 +25,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     $(function(){
       // SyntaxHighlighter.all();
     });
-    $(window).load(function(){
-      $('.flexslider').flexslider({
-        animation: "slide",
-        start: function(slider){
-          $('body').removeClass('loading');
-        }
-      });
-    });
+    // $(window).load(function(){
+    //   $('.flexslider').flexslider({
+    //     animation: "slide",
+    //     start: function(slider){
+    //       $('body').removeClass('loading');
+    //     }
+    //   });
+    // });
   </script>
   <!-- DC Tabs CSS -->
 <link type="text/css" rel="stylesheet" href="http://www.dreamtemplate.com/dreamcodes/tabs/css/tsc_tabs.css" />
@@ -76,31 +76,117 @@ License URL: http://creativecommons.org/licenses/by/3.0/
    </div>
 </div>
 <div class="banner">
- <div class="wrap">
+ 	<div class="wrap">
       <section class="slider">
         <div class="flexslider">
-          <ul class="slides">
-            <li>
-  	    	    <img src="images/banner1.jpg" alt=""/>
-  	    	</li>
-  	    	<li>
-  	    	    <img src="images/banner.jpg"  alt=""/>
-  	    	</li>
-  	    	<li>
-  	    	    <img src="images/banner2.jpg"  alt=""/>
-  	    	</li>
-  	    	<li>
-  	    	    <img src="images/banner3.jpg"  alt=""/>
-  	    	</li>
-          </ul>
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			    <!-- Indicators -->
+			    <ol class="carousel-indicators">
+			      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			      <li data-target="#myCarousel" data-slide-to="1"></li>
+			      <li data-target="#myCarousel" data-slide-to="2"></li>
+			    </ol>
+
+			    <!-- Wrapper for slides -->
+			    <div class="carousel-inner">
+			      <div class="item" ng-class="{'active':$first}" ng-repeat="movie in mc.movieList">
+			        <img class="img-responsive" src="{{movie.banner}}" alt="movie.title" style="width:100%;">
+			      </div>
+			    </div>
+
+			    <!-- Left and right controls -->
+			    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			      <span class="glyphicon glyphicon-chevron-left"></span>
+			      <span class="sr-only">Previous</span>
+			    </a>
+			    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+			      <span class="glyphicon glyphicon-chevron-right"></span>
+			      <span class="sr-only">Next</span>
+			    </a>
+			</div>
         </div>
       </section>
    </div>
 </div>
 </div>
 <div class="content">
-	<div ng-repeat="movie in mc.movieList">
-		<div ng-bind="movie.title"></div>
+	<div class="wrap">
+		<div class="content-top">
+				<div class="col-md-3">
+					<h3>Movie News</h3>
+					<div class="content-left">
+						<a href="">
+							<div class="listimg listimg_1_of_2">
+								 <img src="https://p.w3layouts.com/demos/cinema/web/images/r4.jpg" alt=""/>
+							</div>
+							<div class="text list_1_of_2">
+								  <div class="extra-wrap">
+		                                <div class="data">August. 05. 2013</div>
+		                                <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
+		                                <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
+		                          </div>
+							</div>
+							<div class="clear"></div>
+						</a>
+					</div>
+					<div class="content-left">
+						<div class="listimg listimg_1_of_2">
+							 <img src="https://p.w3layouts.com/demos/cinema/web/images/r6.jpg" alt=""/>
+						</div>
+						<div class="text list_1_of_2">
+							  <div class="extra-wrap">
+	                                <div class="data">August. 05. 2013</div>
+	                                <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
+	                                <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
+	                          </div>
+	                          
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="content-left">
+						<div class="listimg listimg_1_of_2">
+							 <img src="images/pic1.jpg" alt=""/>
+						</div>
+						<div class="text list_1_of_2">
+							  <div class="extra-wrap">
+	                               <div class="data">August. 05. 2013</div>
+	                               <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
+	                               <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
+	                          </div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="content-left">
+						<div class="listimg listimg_1_of_2">
+							 <img src="images/pic2.jpg" alt=""/>
+						</div>
+						<div class="text list_1_of_2">
+							  <div class="extra-wrap">
+	                               <div class="data">August. 05. 2013</div>
+	                               <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
+	                               <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
+	                          </div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<a href="#" class="link2">See all</a>
+				</div>
+				<div class="col-md-9">
+					<div class="container">
+					  <div class="panel panel-info">
+					    <div class="panel-heading">Reservation</div>
+					    <div class="panel-body">
+					    	<div class="col" ng-repeat="seat in mc.seatRange(mc.seats.col)">
+					    		<div class="row form-group" ng-repeat="seat in mc.seatRange(mc.seats.row)">
+				    				<button type="button" class="btn btn-success">G1</button>
+					    		</div>
+					    	</div>
+					    </div>
+					  </div>
+					</div>
+				</div>
+				<div class="clear"></div>		
+		</div>
 	</div>
 </div>
 <div class="footer">
@@ -172,15 +258,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 			var ref = firebase.database().ref();
 			var movieListRef = ref.child('movie');
-			var array = $firebaseArray(movieListRef);
-			vm.movieList = array;
-			console.log(array);
 
-		  	// var syncObject = $firebaseObject(ref);
+			movieListRef.on('value',snap=> {
+				var array = $firebaseArray(movieListRef);
+				vm.movieList = array;
+			})
 
-		  	// synchronize the object with a three-way data binding
-		  	// click on `index.html` above to see it used in the DOM!
-		  	// syncObject.$bindTo($scope, "data");
+			vm.seats = {
+				col:3,
+				row:12
+			};
+
+			vm.seatRange = function(max, min, step) {
+				min = min || 1;
+				step = step || 1;
+				var input = [];
+
+				for (var i = min; i <= max; i+=step) input.push(i);
+				return input;
+			};
 		}
 })();
 </script>
