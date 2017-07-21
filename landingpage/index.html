@@ -34,6 +34,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     //   });
     // });
   </script>
+  <style type="text/css">
+  .movie-selected {
+  	background:#dddddd;
+  }
+  </style>
   <!-- DC Tabs CSS -->
 <link type="text/css" rel="stylesheet" href="http://www.dreamtemplate.com/dreamcodes/tabs/css/tsc_tabs.css" />
  <!-- jQuery Library (skip this step if already called on page ) -->
@@ -114,73 +119,34 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="content-top">
 				<div class="col-md-3">
 					<h3>Movie News</h3>
-					<div class="content-left">
-						<a href="">
+					<div class="content-left form-group" ng-class="{'movie-selected':movie.selected}" ng-repeat="movie in mc.movieList">
+						<a href="" ng-click="mc.selectMovie(movie)">
 							<div class="listimg listimg_1_of_2">
 								 <img src="https://p.w3layouts.com/demos/cinema/web/images/r4.jpg" alt=""/>
 							</div>
 							<div class="text list_1_of_2">
 								  <div class="extra-wrap">
-		                                <div class="data">August. 05. 2013</div>
-		                                <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
-		                                <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
+		                                <div class="data" ng-bind="movie.showingdate"></div>
+		                                <a href="#" class="color"><strong ng-bind="movie.title"></strong></a><br>
+		                                <span class="text-top" ng-bind="movie.desc"></span>
 		                          </div>
 							</div>
 							<div class="clear"></div>
 						</a>
-					</div>
-					<div class="content-left">
-						<div class="listimg listimg_1_of_2">
-							 <img src="https://p.w3layouts.com/demos/cinema/web/images/r6.jpg" alt=""/>
-						</div>
-						<div class="text list_1_of_2">
-							  <div class="extra-wrap">
-	                                <div class="data">August. 05. 2013</div>
-	                                <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
-	                                <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
-	                          </div>
-	                          
-						</div>
-						<div class="clear"></div>
-					</div>
-					<div class="content-left">
-						<div class="listimg listimg_1_of_2">
-							 <img src="images/pic1.jpg" alt=""/>
-						</div>
-						<div class="text list_1_of_2">
-							  <div class="extra-wrap">
-	                               <div class="data">August. 05. 2013</div>
-	                               <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
-	                               <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
-	                          </div>
-						</div>
-						<div class="clear"></div>
-					</div>
-					<div class="content-left">
-						<div class="listimg listimg_1_of_2">
-							 <img src="images/pic2.jpg" alt=""/>
-						</div>
-						<div class="text list_1_of_2">
-							  <div class="extra-wrap">
-	                               <div class="data">August. 05. 2013</div>
-	                               <a href="#" class="color"><strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</strong></a><br>
-	                               <span class="text-top">iam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,</span>
-	                          </div>
-						</div>
-						<div class="clear"></div>
 					</div>
 					<a href="#" class="link2">See all</a>
 				</div>
 				<div class="col-md-9">
 					<div class="container">
 					  <div class="panel panel-info">
-					    <div class="panel-heading">Reservation</div>
+					    <div class="panel-heading">Seats</div>
 					    <div class="panel-body">
-					    	<div class="col" ng-repeat="seat in mc.seatRange(mc.seats.col)">
-					    		<div class="row form-group" ng-repeat="seat in mc.seatRange(mc.seats.row)">
-				    				<button type="button" class="btn btn-success">G1</button>
+					    	<div class="col" ng-repeat="col in mc.cols">
+					    		<div class="form-group" ng-repeat="item in mc.items | filter:{'col':col}">
+				    				<button type="button" ng-click="mc.seatAction(item)" class="btn" ng-class="{'btn btn-success':item.status == 'AVAILED','btn':item.status == 'NA'||item.status == ''}">{{item.id}}</button>
 					    		</div>
 					    	</div>
+					    	<button ng-click="mc.addMovie()" class="btn">New Movie</button>
 					    </div>
 					  </div>
 					</div>
@@ -244,38 +210,259 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="text/javascript" src="https://code.jquery.com/jquery-git.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="/angular-bootstrap-file-field.min.js"></script>
 <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
 <script>
 (function(){
 	angular
-		.module('movieapp',['firebase'])
+		.module('movieapp',['firebase','ui.bootstrap','bootstrap.fileField'])
 		.controller('MovieCtrl',MovieCtrl)
+		.controller('CreateMovieModalInsCtl',CreateMovieModalInsCtl)
 
-		MovieCtrl.$inject = ['$scope','$firebaseObject','$firebaseArray']
-		function MovieCtrl($scope, $firebaseObject, $firebaseArray){
+		MovieCtrl.$inject = ['$scope','$firebaseObject','$firebaseArray', '$uibModal']
+		function MovieCtrl($scope, $firebaseObject, $firebaseArray, $uibModal){
 			var vm = this;
 
-			var ref = firebase.database().ref();
-			var movieListRef = ref.child('movie');
+			const ref = firebase.database().ref();
+			const movieListRef = ref.child('movie');
+			const seatsRef = ref.child('seats');
+			const seatsPerMovieRef = ref.child('seatspermovie');
+
 
 			movieListRef.on('value',snap=> {
-				var array = $firebaseArray(movieListRef);
-				vm.movieList = array;
+				vm.movieList = $firebaseArray(movieListRef);
 			})
 
-			vm.seats = {
-				col:3,
-				row:12
+			vm.seatRange = function(col, row) {
+				col = col || 1;
+				row = row || 1;
+
+				vm.items = [];
+				vm.cols = [];
+				for (var i = 1; i <= col; i++) {
+					vm.cols.push(i);
+					for (var j = 1; j <= row; j++) {
+						vm.items.push({id:i+'-'+j,col:i,row:j,status:''});
+					};
+				};
 			};
 
-			vm.seatRange = function(max, min, step) {
-				min = min || 1;
-				step = step || 1;
-				var input = [];
+			vm.rows = [{id:1,status:'AVAILED'},{id:2,status:''}]
 
-				for (var i = min; i <= max; i+=step) input.push(i);
-				return input;
+			vm.seatAction = function(seat){
+				if (seat.status == 'AVAILED') {
+					seat.status = 'NA';
+				} else if(!seat.status || seat.status == 'NA') {
+					seat.status = 'AVAILED';
+				} else {
+					seat.status = ''
+				}
+
+			 	var seatActionRef = seatsRef.child(vm.selectedMovieId+'/'+seat.id);
+				seatActionRef.update({
+					status:seat.status
+				});
+				// seatActionRef.on('child_changed',snap=>{
+				// 	vm.selectMovie(vm.selectedMovieId);
+				// });
+			};
+
+			vm.addMovie = function() {
+				var newMovieKey = movieListRef.push().key;
+				var newMovieRef = movieListRef.child(newMovieKey)
+				var newMovie = {
+					title:'Avengers',
+					banner:'/banner',
+					framebanner:'/frame',
+					showingdate:'August 10, 2017',
+					desc:'Blah blah blah'
+				};
+				vm.seatRange(5,5);
+
+	          	var modalInstance = $uibModal.open({
+		            controller:'CreateMovieModalInsCtl',
+		            templateUrl:'create-modal.html',
+		            controllerAs: 'vm',
+		            resolve :{
+		              formData: function () {
+		                return {
+		                  title: 'Add New Movie',
+		                  formData: {
+		                  	id : newMovieKey
+		                  }
+		                };
+		              }
+		            }
+		          });
+	          	modalInstance.result.then(function (){
+		            vm.getCategoryTypeList(data);
+	          	},function (){});
+
+				// newMovieRef.set(newMovie);
+				// newMovieRef.once('child_added', snap=>{
+				// 	var newMovieSeatRef = seatsRef.child(newMovieKey);
+				// 	var newseatsPerMovie = seatsPerMovieRef.child(newMovieKey)
+
+				// 	angular.forEach(vm.items, function(v, k){
+				// 		var newMovieSeatNoRef = newMovieSeatRef.child(v.id);
+				// 		newMovieSeatNoRef.set({
+				// 			'status':v.status,
+				// 			'reservedby':'default'
+				// 		});
+				// 	})
+
+				// 	newseatsPerMovie.set({
+				// 		row:3,
+				// 		col:5
+				// 	});
+				// 	console.log("from movie added!");
+				// });
+			};
+
+			vm.selectMovie = function(data){
+				var movieSeatsRef = seatsRef.child(data.$id);
+				var tempSeatsPerMovieRef = seatsPerMovieRef.child(data.$id);
+				
+				angular.forEach(vm.movieList, function(v, k){
+					v.selected = false;
+				});
+
+				vm.selectedMovieId = data.$id;
+				data.selected = true;
+
+				tempSeatsPerMovieRef.once('value',snap=>{
+					vm.cols = [];
+					vm.seats = snap.val();
+					for (var i = 1; i <= vm.seats.col; i++) {
+						vm.cols.push(i);
+					}
+					console.log(vm.cols.length);
+					// vm.seatRange(vm.seats.col, vm.seats.row);
+				});
+
+				movieSeatsRef.once('value', snap=>{
+					vm.items = [];
+					angular.forEach(snap.val(), function(v,k){
+						vm.items.push(
+							{id:k, status:v.status, col:k.split('-')[0], row:k.split('-')[1]}
+						);
+					});
+				});
+
+				console.log(vm.items);
+
+			}
+
+			movieListRef.on('child_changed', snap=> {
+				// console.log("changed:"+snap.val());
+			});
+			seatsRef.on('child_changed', snap=> {
+				// console.log("changed:"+snap.val());
+			});
+			seatsPerMovieRef.on('child_changed', snap=> {
+				// console.log("changed:"+snap.val());
+			});
+
+
+			// movieListRef.on('child_added', snap=> {
+			// 	// console.log("added");
+			// 	// console.log(snap.val());
+			// });
+
+			// movieListRef.on('child_removed', snap=> {
+			// 	// console.log("removed:"+snap.val());
+			// });
+
+			ref.once('value',snap =>{
+				console.log(snap.key);
+				console.log(snap.val());
+			})
+
+		}
+
+		CreateMovieModalInsCtl.$inject = ['$http','$uibModalInstance', 'formData', '$filter'];
+		function CreateMovieModalInsCtl($http, $uibModalInstance, formData, $filter) {
+			var vm = this;
+			const ref = firebase.database().ref();
+			const storageRef = firebase.storage().ref();
+
+			const movieRef = ref.child('movie')
+			const seatsRef = ref.child('seats');
+			const seatsPerMovieRef = ref.child('seatspermovie')
+			const movieStorageRef = storageRef.child('movie');
+
+			const newMovieKey = movieRef.push().key;
+
+			vm.formData = formData;
+			vm.cancel = function(){
+				$uibModalInstance.dismiss('cancel');
+			};
+
+			vm.submit = function(data){
+				if (vm.frmCreate.$valid) {
+					vm.frmCreate.withError = false;
+
+					const newMovieStorageRef = movieStorageRef.child(newMovieKey);
+					var metadata = {
+						contentType:data.uploadFile.type
+					};
+
+					var dataCopy = angular.copy(data);
+					dataCopy.showingdate =  $filter('date')(dataCopy.showingdate,'yyyy-MM-dd');
+
+					newMovieStorageRef.put(data.uploadFile, metadata).then(snap=>{
+						dataCopy.banner = snap.downloadURL;
+
+						var newMovieRef	= movieRef.child(newMovieKey);
+						var data = {
+							'showingdate':dataCopy.showingdate,
+							'banner':dataCopy.banner,
+							'title':dataCopy.title,
+							'desc':dataCopy.desc,
+							'col':dataCopy.col,
+							'row':dataCopy.row
+						}
+						newMovieRef.set(data);
+
+						var newSeatsPerMovieRef = seatsPerMovieRef.child(newMovieKey);
+						var seats = {
+							col:data.col,
+							row:data.row
+						};
+						newSeatsPerMovieRef.set(seats);
+
+						vm.seatRange(data.col,data.row);
+						var newMovieSeatRef = seatsRef.child(newMovieKey);
+						angular.forEach(vm.items, function(v, k){
+							var newMovieSeatNoRef = newMovieSeatRef.child(v.id);
+							newMovieSeatNoRef.set({
+								'status':v.status,
+								'reservedby':'default'
+							});
+						})
+
+					});
+
+					$uibModalInstance.close();
+				} else {
+					vm.frmCreate.withError = true;
+				};
+			}
+
+			vm.seatRange = function(col, row) {
+				col = col || 1;
+				row = row || 1;
+
+				vm.items = [];
+				vm.cols = [];
+				for (var i = 1; i <= col; i++) {
+					vm.cols.push(i);
+					for (var j = 1; j <= row; j++) {
+						vm.items.push({id:i+'-'+j,col:i,row:j,status:''});
+					};
+				};
 			};
 		}
 })();
