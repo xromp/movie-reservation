@@ -1,0 +1,13 @@
+{
+  "rules": {
+    ".read": "true",
+    ".write":"auth !== null",
+      "movie" : {
+        "$movieid" : {
+          ".read":"true",
+          ".write":"true",
+          "title":{".validate":"newData.isString() && newData.val().length < 50"}
+        }
+      }
+  }
+}

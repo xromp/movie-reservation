@@ -1,0 +1,565 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html ng-app="movieapp" ng-cloak>
+<head>
+<title>Free Theater Website Template | Home :: w3layouts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script src="js/modernizr.js"></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'></script>
+<script src='js/jquery.color-RGBa-patch.js'></script>
+<script src='js/example.js'></script>
+<!-- jQuery -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+ <!-- FlexSlider -->
+  <script defer src="js/jquery.flexslider.js"></script>
+  <script type="text/javascript">
+    $(function(){
+      // SyntaxHighlighter.all();
+    });
+    // $(window).load(function(){
+    //   $('.flexslider').flexslider({
+    //     animation: "slide",
+    //     start: function(slider){
+    //       $('body').removeClass('loading');
+    //     }
+    //   });
+    // });
+  </script>
+  <style type="text/css">
+  .movie-selected {
+    background:#dddddd;
+  }
+  </style>
+  <!-- DC Tabs CSS -->
+<link type="text/css" rel="stylesheet" href="http://www.dreamtemplate.com/dreamcodes/tabs/css/tsc_tabs.css" />
+ <!-- jQuery Library (skip this step if already called on page ) -->
+<script type="text/javascript" src="http://www.dreamtemplate.com/dreamcodes/jquery.min.js"></script> <!-- (do not call twice) -->
+ <!-- DC Tabs JS -->
+<!--<script type="text/javascript" src="http://www.dreamtemplate.com/dreamcodes/tabs/js/tsc_tabs.js"></script>-->
+<link rel="stylesheet" href="css/tsc_tabs.css" type="text/css" media="all" />
+<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+
+</head>
+<body ng-controller="MovieCtrl as mc">
+<div class="header">
+  <div class="header-top">
+    <div class="wrap">
+      <div class="banner-no">
+          <img src="images/banner-no.png" alt=""/>
+        </div>
+        <div class="nav-wrap">
+          <ul class="group" id="example-one">
+                 <li class="current_page_item">
+                        <a href="#" ng-click="mc.signIn()" ng-if="!mc.user.isSignedOn"><i class=""></i> Sign-in with Google</a>
+                        <a href="#" ng-click="mc.signOut()" ng-if="mc.user.isSignedOn">
+                        <img class="img-circle" src="{{mc.user.photo}}" alt="{{mc.user.name}}" style="width:3em;"/>
+                         Sign-out</a>
+                 </li>
+              </ul>
+        </div>
+      <div class="clear"></div>
+      </div>
+    </div>
+<div class="block">
+  <div class="wrap">
+    <div class="h-logo">
+      <a href="index.html"><img src="images/logo.png" alt=""/></a>
+    </div>
+        <form action="#" id="reservation-form">
+           <fieldset>
+                    <div class="col-md-9">
+                       <label>Find a Movie:</label>
+                          <ui-select ng-model="mc.query.movieid" ng-change="mc.search(mc.query)" theme="select2" ng-disabled="ctrl.disabled" style="min-width: 300px;" title="Search Movie">
+                            <ui-select-match placeholder="Search movies...">{{$select.selected.title}}</ui-select-match>
+                            <ui-select-choices repeat="movie.$id as movie in mc.movieList | filter: $select.search">
+                              <!-- <div ng-bind-html="movie.title | highlight: $select.search"></div> -->
+                              <!-- <div ng-bind="movie.title | highlight: $select.search"> -->
+                              <div>
+
+                                <img src="{{movie.frame}}" style="width: 25px;"/>
+                                <span ng-bind="movie.title"></span>
+                              </div>
+<!--                               <small ng-bind="movie.desc">
+                              </small> -->
+                            </ui-select-choices>
+                          </ui-select>
+<!--                         <select class="select2">
+                          <option ng-repeat="movie in mc.movieList">{{movie.title}}</option>
+                        </select> -->
+<!--                           <h3>Select2 theme</h3>
+                          <p>Selected: {{ctrl.person.selected}}</p> -->
+                  </div>
+           </fieldset>
+            </form>
+            <div class="clear"></div>
+   </div>
+</div>
+<div class="banner">
+  <div class="wrap">
+      <section class="slider">
+        <div class="flexslider">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item" ng-class="{'active':$first}" ng-repeat="movie in mc.movieList">
+              <img class="img-responsive" src="{{movie.banner}}" alt="movie.title" style="width:100%;">
+            </div>
+          </div>
+
+          <!-- Left and right controls -->
+          <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+          </a>
+      </div>
+        </div>
+      </section>
+   </div>
+</div>
+<div class="content" id="portfolio">
+  <div class="wrap">
+    <div class="content-top">
+        <div class="col-md-3">
+          <h3>Blockbuster Movies</h3>
+          <div class="form-group" ng-if="mc.user.isSignedOn">
+            <button class="btn btn-success" ng-click="mc.addMovie()"><i class=" glyphicon glyphicon-plus"></i> Add New Movie</button>
+          </div>
+          <div class="content-left form-group" ng-class="{'movie-selected':movie.selected}" ng-repeat="movie in mc.movieList | filter:{'$id':mc.query.movieid}">
+            <a href="" ng-click="mc.selectMovie(movie)">
+              <div class="listimg listimg_1_of_2">
+                 <img src="{{movie.frame}}" alt="movie.title"/>
+              </div>
+              <div class="text list_1_of_2">
+                  <div class="extra-wrap">
+                    <div class="data" ng-bind="movie.showingdate | date : 'MMMM d, y'"></div>
+                    <a href="#" class="color"><strong ng-bind="movie.title"></strong></a><br>
+                    <span class="text-top" ng-bind="movie.desc"></span>
+                  </div>
+              </div>
+              <div class="clear"></div>
+            </a>
+          </div>
+          <a href="#" class="link2">See all</a>
+        </div>
+        <div class="col-md-9">
+          <br><br><br><br>
+          <div class="container">
+            <div class="panel panel-info">
+              <div class="panel-heading">Seats</div>
+              <div class="panel-body text-center">
+                <div>
+                  <div class="col" ng-repeat="col in mc.cols">
+                    <div class="form-group" ng-repeat="item in mc.items | filter:{'col':col}">
+                      <button type="button" ng-click="mc.seatAction(item)" class="btn" ng-class="{'btn btn-success':item.status == 'AVAILED','btn':item.status == 'NA'||item.status == ''}">{{item.id}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clear"></div>   
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="wrap">
+      <div class="footer-top">
+        <div class="col_1_of_4 span_1_of_4">
+          <div class="textcontact">
+            <p>8/10, Upper McKinley Building, <br>
+            10 Upper McKinley Rd<br>
+            Ph: +63 90000000.<br>
+            Email:rommelp@google.com<br>
+            </p>
+          </div>
+        </div>
+        <div class="col_1_of_4 span_1_of_4">
+          <div class="call_info">
+            <p class="txt_3">Call us toll free:</p>
+            <p class="txt_4">1 800 000 00000</p>
+          </div>
+        </div>
+        <div class="col_1_of_4 span_1_of_4">
+          <div class=social>
+            <a href="#"><img src="images/fb.png" alt=""/></a>
+            <a href="#"><img src="images/tw.png" alt=""/></a>
+            <a href="#"><img src="images/dribble.png" alt=""/></a>
+            <a href="#"><img src="images/pinterest.png" alt=""/></a>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+  <div ng-controller="CheckoutCtrl">
+    
+  </div>
+  <div class="footer-bottom">
+  <div class="wrap">
+  <div class="copy">
+    
+  </div>
+  </div>
+</div>
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCNm5FVL_PGn8u62Xppwag8O840wrh0ghI",
+    authDomain: "onlinereservation-2lx.firebaseapp.com",
+    databaseURL: "https://onlinereservation-2lx.firebaseio.com",
+    projectId: "onlinereservation-2lx",
+    storageBucket: "onlinereservation-2lx.appspot.com",
+    messagingSenderId: "737586176541"
+  };
+  firebase.initializeApp(config);
+</script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-git.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="/angular-bootstrap-file-field.min.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.js"></script>
+<script type="text/javascript" src="sample.js"></script>
+<script>
+(function(){
+  angular
+    .module('movieapp',['billingapp','firebase','ui.bootstrap','bootstrap.fileField','ui.select'])
+    .controller('MovieCtrl',MovieCtrl)
+    .controller('CreateMovieModalInsCtl',CreateMovieModalInsCtl)
+    .service('MovieSrvc', MovieSrvc)
+
+    MovieCtrl.$inject = ['$scope','$firebaseObject','$firebaseArray', '$uibModal', 'MovieSrvc']
+    function MovieCtrl($scope, $firebaseObject, $firebaseArray, $uibModal, MovieSrvc){
+      var vm = this;
+
+      vm.auth = firebase.auth();
+      vm.auth.onAuthStateChanged(user =>{
+        vm.onAuthStateChanged(user);
+      });
+
+      const ref = firebase.database().ref();
+      const movieListRef = ref.child('movie');
+      const seatsRef = ref.child('seats');
+      const seatsPerMovieRef = ref.child('seatspermovie');
+
+      vm.movieList = $firebaseArray(movieListRef.limitToFirst(4));
+
+      vm.signIn = function(){
+        var provider = new firebase.auth.GoogleAuthProvider();
+        vm.auth.signInWithPopup(provider).then(function(result) {
+          var token = result.credential.accessToken;
+          var user = result.user;
+          // ...
+        }).catch(function(error) {
+          alert(error.code + ': '+error.message);
+        });
+      };
+
+      vm.onAuthStateChanged = function(user){
+        vm.user = {};
+        if (user) {
+          console.log(user);
+          vm.user.isSignedOn = true;
+          vm.user.name = user.displayName;
+          vm.user.email = user.email;
+          vm.user.uid = user.uid;
+          vm.user.photo = (user.photoURL || '/images/profile_placeholder.png');
+        }
+        $scope.$apply();
+      };
+
+      vm.signOut = function(){
+        vm.auth.signOut().then(function() {
+          vm.user = {};
+          $scope.apply();
+          // Sign-out successful.
+        }).catch(function(error) {
+          // An error happened.
+        });
+      };
+
+      vm.seatRange = function(col, row) {
+        col = col || 1;
+        row = row || 1;
+
+        vm.items = [];
+        vm.cols = [];
+        for (var i = 1; i <= col; i++) {
+          vm.cols.push(i);
+          for (var j = 1; j <= row; j++) {
+            vm.items.push({id:i+'-'+j,col:i,row:j,status:''});
+          };
+        };
+      };
+
+      vm.rows = [{id:1,status:'AVAILED'},{id:2,status:''}]
+
+      vm.seatAction = function(seat){
+        if (vm.user.isSignedOn) {
+          var seatDet = {};
+          var data = {
+            seatid:seat.id,
+            movieid:vm.selectedMovieId
+          };
+
+          MovieSrvc.getSeatDet(data)
+          .then(response =>{
+            seatDet = response.data;
+            if (seatDet.reservedby == vm.user.email || !seatDet.reservedby) {
+              seat.email = vm.user.email;
+              seat.uid = vm.user.uid;
+              if (seat.status == 'AVAILED') {
+                seat.status = 'NA';
+                seat.email = '';
+                seat.uid = '';
+              } else if(!seat.status || seat.status == 'NA') {
+                seat.status = 'AVAILED';
+              } else {
+                seat.status = ''
+                seat.email = '';
+                seat.uid = '';
+              }           
+              var seatActionRef = seatsRef.child(vm.selectedMovieId+'/'+seat.id);
+              seatActionRef.update({
+                status:seat.status,
+                uid:seat.uid,
+                reservedby:seat.email
+              });         
+            } else {
+              alert('Already reserved.');
+            }
+          },error=>{alert('Something wrong.')});
+
+        } else {
+          alert('Can\'t reserved seat(s). Sign In first.')
+        }
+      };
+
+      vm.addMovie = function() {
+        var newMovieKey = movieListRef.push().key;
+        var newMovieRef = movieListRef.child(newMovieKey)
+
+              var modalInstance = $uibModal.open({
+                controller:'CreateMovieModalInsCtl',
+                templateUrl:'create-modal.html',
+                controllerAs: 'vm',
+                resolve :{
+                  formData: function () {
+                    return {
+                      title: 'Add New Movie',
+                      formData: {
+                        id : newMovieKey
+                      }
+                    };
+                  }
+                }
+              });
+              modalInstance.result.then(function (){
+                vm.getCategoryTypeList(data);
+              },function (){});
+
+      };
+      
+      vm.search = function(i){
+        vm.selectMovie({'$id':i.movieid});
+      };
+
+      vm.selectMovie = function(data){
+        var movieSeatsRef = seatsRef.child(data.$id);
+        var tempSeatsPerMovieRef = seatsPerMovieRef.child(data.$id);
+        
+        angular.forEach(vm.movieList, function(v, k){
+          v.selected = false;
+        });
+
+        vm.selectedMovieId = data.$id;
+        data.selected = true;
+
+        tempSeatsPerMovieRef.once('value',snap=>{
+          vm.cols = [];
+          vm.seats = snap.val();
+          for (var i = 1; i <= vm.seats.col; i++) {
+            vm.cols.push(i);
+          }
+        });
+
+        movieSeatsRef.once('value', snap=>{
+          vm.items = [];
+          angular.forEach(snap.val(), function(v,k){
+            vm.items.push(
+              {id:k, status:v.status, col:k.split('-')[0], row:k.split('-')[1]}
+            );
+          });
+        });
+
+      }
+
+      movieListRef.on('child_changed', snap=> {
+        // console.log("changed:"+snap.val());
+      });
+      seatsRef.on('child_changed', snap=> {
+        // console.log("changed:"+snap.val());
+      });
+      seatsPerMovieRef.on('child_changed', snap=> {
+        // console.log("changed:"+snap.val());
+      });
+
+      ref.once('value',snap =>{
+      })
+
+    }
+
+    CreateMovieModalInsCtl.$inject = ['$http','$uibModalInstance', 'formData', '$filter'];
+    function CreateMovieModalInsCtl($http, $uibModalInstance, formData, $filter) {
+      var vm = this;
+      const ref = firebase.database().ref();
+      const storageRef = firebase.storage().ref();
+
+      const movieRef = ref.child('movie')
+      const seatsRef = ref.child('seats');
+      const seatsPerMovieRef = ref.child('seatspermovie')
+      const movieStorageRef = storageRef.child('movie');
+
+      const newMovieKey = movieRef.push().key;
+
+      vm.formData = formData;
+      vm.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+      };
+
+      vm.submit = function(data){
+        if (vm.frmCreate.$valid) {
+          vm.frmCreate.withError = false;
+
+          const newMovieBannerStorageRef = movieStorageRef.child('/banner/'+newMovieKey);
+          var metadata = {
+            contentType:data.uploadFile.type
+          };
+
+          var dataCopy = angular.copy(data);
+          dataCopy.showingdate =  $filter('date')(dataCopy.showingdate,'yyyy-MM-dd');
+
+          newMovieBannerStorageRef.put(data.uploadFile, metadata).then(snap=>{
+            var newMovieFrameStorageRef = movieStorageRef.child('/frame/'+newMovieKey);
+            newMovieFrameStorageRef.put(data.uploadFrame, metadata).then(snapframe=>{
+
+              dataCopy.banner = snap.downloadURL;
+              dataCopy.frame = snapframe.downloadURL;
+
+              var newMovieRef = movieRef.child(newMovieKey);
+              var data = {
+                'showingdate':dataCopy.showingdate,
+                'banner':dataCopy.banner,
+                'frame':dataCopy.frame,
+                'title':dataCopy.title,
+                'desc':dataCopy.desc,
+                'col':dataCopy.col,
+                'row':dataCopy.row
+              };
+              newMovieRef.set(data,error =>{
+                if (error) {
+                  alert(error.message);
+                } else {
+
+                  var newSeatsPerMovieRef = seatsPerMovieRef.child(newMovieKey);
+                  var seats = {
+                    col:data.col,
+                    row:data.row
+                  };
+                  newSeatsPerMovieRef.set(seats, error => {
+                    if (!error) {
+                      vm.seatRange(data.col,data.row);
+
+                      var newMovieSeatRef = seatsRef.child(newMovieKey);
+                      angular.forEach(vm.items, function(v, k){
+                        var newMovieSeatNoRef = newMovieSeatRef.child(v.id);
+                        newMovieSeatNoRef.set({
+                          'status':v.status,
+                          'reservedby':''
+                        }, error=>{
+                          if (!error) {
+                            $uibModalInstance.close();
+                          } else {
+                            alert(error.message);
+                          }
+                        });
+                      })
+                      
+                    } else {
+                      alert(error.message);
+                    }
+                    
+                  });
+
+                }
+              });
+            })
+          });
+
+        } else {
+          vm.frmCreate.withError = true;
+        };
+      }
+
+      vm.seatRange = function(col, row) {
+        col = col || 1;
+        row = row || 1;
+
+        vm.items = [];
+        vm.cols = [];
+        for (var i = 1; i <= col; i++) {
+          vm.cols.push(i);
+          for (var j = 1; j <= row; j++) {
+            vm.items.push({id:i+'-'+j,col:i,row:j,status:''});
+          };
+        };
+      };
+
+    }
+
+    MovieSrvc.$inject = ['$http']
+    function MovieSrvc($http){
+      var domain = 'https://onlinereservation-2lx.firebaseio.com';
+      return {
+        getSeatDet:function(data){
+          return $http({
+            'method':'GET',
+            'url':domain+'/seats/'+data.movieid+'/'+data.seatid+'.json',
+            headers:{'Content-Type':'application/json'}
+          })
+        }
+      }
+    }
+})();
+</script>
+</html>

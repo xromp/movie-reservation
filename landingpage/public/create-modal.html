@@ -1,0 +1,94 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="modal-title" ng-bind="vm.formData.title"></h5>
+</div>
+<div class="modal-body" id="modal-body">
+	<form name="vm.frmCreate" novalidate>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+
+			  	<div class="form-group" ng-class="{'has-error': vm.frmCreate.title.$invalid && vm.frmCreate.withError }">
+			        <label class="control-label col-md-4 col-sm-3 col-xs-12">Title</label>
+			        <div class="col-md-8 col-sm-9 col-xs-12 form-group">
+			          <input type="text" name="title" class="form-control col-md-7 col-xs-12" ng-model="vm.movieDetails.title" required>
+			          <span class="help-block" ng-show="vm.frmCreate.title.$invalid && vm.frmCreate.withError">Title is required field.</span>
+			        </div>
+			  	</div>
+
+			  	<div class="form-group" ng-class="{'has-error': vm.frmCreate.desc.$invalid && vm.frmCreate.withError }">
+			        <label class="control-label col-md-4 col-sm-3 col-xs-12">Brief Summary</label>
+			        <div class="col-md-8 col-sm-9 col-xs-12 form-group">
+			          <textarea type="text" name="desc" class="form-control col-md-7 col-xs-12" ng-model="vm.movieDetails.desc" required></textarea>
+			          <span class="help-block" ng-show="vm.frmCreate.desc.$invalid && vm.frmCreate.withError">Brief Summary is required field.</span>
+			        </div>
+			  	</div>
+
+		  		<div class="form-group" ng-class="{'has-error': vm.frmCreate.showingdate.$invalid && vm.frmCreate.withError }">
+			        <label class="control-label col-md-4 col-sm-3 col-xs-12">Showing Date</label>
+			        <div class="col-md-8 col-sm-9 col-xs-12 form-group">
+			          <input type="date" name="showingdate" class="form-control col-md-7 col-xs-12" ng-model="vm.movieDetails.showingdate" required>
+			          <span class="help-block" ng-show="vm.frmCreate.showingdate.$invalid && vm.frmCreate.withError">Showing date is required field.</span>
+			        </div>
+			  	</div>
+
+
+		  		<div class="form-group">
+			        <label class="control-label col-md-4 col-sm-3 col-xs-12">Capacity</label>
+			        <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+			          <input type="number" name="col" class="form-control col-md-7 col-xs-12" ng-model="vm.movieDetails.col" placeholder="Columns" required>
+			          <span class="help-block" ng-show="vm.frmCreate.col.$invalid && vm.frmCreate.withError">Column is required field.</span>
+			        </div>
+			        <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+			          <input type="number" name="row" class="form-control col-md-7 col-xs-12" ng-model="vm.movieDetails.row" placeholder="Rows" required>
+			          <span class="help-block" ng-show="vm.frmCreate.row.$invalid && vm.frmCreate.withError">Row is required field.</span>
+			        </div>
+			  	</div>
+
+
+			  	<div class="form-group">
+<!-- 
+			  		<file-field ng-model="vm.movieDetails.uploadFile" preview="previewImage" class="col-md-3 col-sm-3 col-xs-12 btn btn-success">Select File</file-field>
+			  		<div class="col-md-9 col-sm-9 col-xs-12 form-group">
+						<img ng-src="{{previewImage}}">
+					</div> -->
+			        <label class="control-label col-md-4 col-sm-3 col-xs-12">Banner</label>
+			        <div class="col-md-8 col-sm-9 col-xs-12 form-group">
+				  		<file-field ng-model="vm.movieDetails.uploadFile" preview="previewImage" class="col-md-4 col-sm-4 col-xs-12 btn btn-success">Select File</file-field>
+				  		<div class="form-group">
+							<img ng-src="{{previewImage}}" class="img-responsive" ng-class="{'img-thumbnail':previewImage}">
+						</div>
+			        </div>
+			  	</div>
+
+			  	<div class="form-group">
+<!-- 
+			  		<file-field ng-model="vm.movieDetails.uploadFile" preview="previewImage" class="col-md-3 col-sm-3 col-xs-12 btn btn-success">Select File</file-field>
+			  		<div class="col-md-9 col-sm-9 col-xs-12 form-group">
+						<img ng-src="{{previewImage}}">
+					</div> -->
+			        <label class="control-label col-md-4 col-sm-3 col-xs-12">Frame Photo</label>
+			        <div class="col-md-8 col-sm-9 col-xs-12 form-group">
+				  		<file-field ng-model="vm.movieDetails.uploadFrame" preview="previewFrame" class="col-md-4 col-sm-4 col-xs-12 btn btn-success">Select File</file-field>
+				  		<div class="form-group">
+							<img ng-src="{{previewFrame}}" class="img-responsive" ng-class="{'img-thumbnail':previewFrame}">
+						</div>
+			        </div>
+			  	</div>
+			</div>
+			<div class="col-md-8 col-md-offset-1" ng-show="vm.response.status">
+				<div class="text-center" ng-class="{'alert alert-success':vm.response.status == 200,'alert alert-danger':vm.response.status != 200}" ng-bind="vm.response.message">
+				</div>
+			</div>
+		</div>
+	</form>
+
+  <!-- <div ng-bind="vm.formData.message"></div> -->
+	<!-- <div class="modal-footer"> -->
+	<br>
+		<div class="pull-right">
+		  <button class="btn btn-default" type="button" ng-click="vm.cancel()">Cancel</button>
+		  <button class="btn btn-success" type="button" ng-click="vm.submit(vm.movieDetails)">Submit</button>
+		</div>
+	<!-- </div> -->
+  <br>
+  <br>
+</div>
